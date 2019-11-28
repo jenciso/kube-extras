@@ -1,0 +1,18 @@
+---
+- name: dashboard | create dir
+  file: path=/opt/dashboard state=directory
+
+- name: dashboard | copy yaml
+  template:
+    src: "{{ item }}"
+    dest: /opt/dashboard
+  with_items:
+    - kubernetes-dashboard.yaml
+    - kubernetes-dashboard_ingress.yaml
+
+- name: dashboard | deploy 
+  shell: kubectl apply -f /opt/dashboard/{{ item }}
+  with_items:
+    - kubernetes-dashboard.yaml
+    - kubernetes-dashboard_ingress.yaml
+  ignore_errors: true

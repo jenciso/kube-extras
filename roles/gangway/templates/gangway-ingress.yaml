@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gangway
+  namespace: auth-system
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  tls:
+  - secretName: gangway
+    hosts:
+    - kubectl.{{ paas_domain }}
+  rules:
+  - host: kubectl.{{ paas_domain }}
+    http:
+      paths:
+      - backend:
+          serviceName: gangway-svc
+          servicePort: http

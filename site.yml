@@ -1,0 +1,22 @@
+---
+- name: gangway
+  hosts: master
+  serial: 1
+  remote_user: ansible
+  environment: "{{ proxy_env }}"
+  roles:
+    - gangway
+  tags:
+    - gangway
+
+
+- name: dashboard
+  hosts: master
+  serial: 1
+  remote_user: ansible
+  environment: "{{ proxy_env }}"
+  roles:
+    - dashboard
+  tags:
+    - dashboard
+

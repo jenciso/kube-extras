@@ -1,0 +1,36 @@
+---
+- name: kube-gangway | create namespace
+  shell:
+    cmd: |
+      cat <<EOF | kubectl apply -f -
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: auth-system
+      EOF
+  ignore_errors: true
+
+
+- name: kube-gangway | create dirs
+  file: name={{ item }} state=directory
+  with_items:
+   - /opt/kube-gangway/gangway
+
+
+- name: kube-gangway | copying gangway configuration
+  template: src={{ item }} dest=/opt/kube-gangway/gangway/
+  with_items:
+    - gangway-configmap.yaml
+    - gangway-deployment.yaml
+    - gangway-ingress.yaml
+    - gangway-service.yaml
+
+
+- name: kube-gangway | create secret
+  shell: kubectl -n auth-system create secret generic gangway-key --from-literal=sesssionkey=$(openssl rand -base64 32)
+  ignore_errors: true
+
+
+- name: kube-gangway | apply gangway yaml files
+  shell: kubectl apply -f /opt/kube-gangway/gangway/
+  ignore_errors: true  

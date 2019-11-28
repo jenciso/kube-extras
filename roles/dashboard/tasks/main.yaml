@@ -1,0 +1,11 @@
+---
+- include: heapster.yaml
+  when:
+    - k8s_master_main|bool
+  tags: heapster
+
+- include: dashboard.yaml
+  when:
+    - k8s_master_main|bool
+  tags: dashboard
+

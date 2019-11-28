@@ -1,0 +1,24 @@
+---
+- name: heapster | create dir
+  file: path=/opt/heapster state=directory
+
+- name: heapster | copy yaml
+  template:
+    src: "{{ item }}"
+    dest: /opt/heapster
+  with_items:
+    - heapster.yaml
+    - grafana.yaml
+    - influxdb.yaml
+    - heapster-role.yaml
+    - heapster-rbac.yaml
+
+- name: heapster | deploy 
+  shell: kubectl apply -f /opt/heapster/{{ item }}
+  with_items:
+    - heapster.yaml
+    - grafana.yaml
+    - influxdb.yaml
+    - heapster-role.yaml
+    - heapster-rbac.yaml
+  ignore_errors: true

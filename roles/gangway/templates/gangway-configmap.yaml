@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gangway
+  namespace: auth-system
+data:
+  gangway.yaml: |
+    clusterName: "kubernetes"
+    apiServerURL: "https://apik8s.enciso.website:6443"
+    authorizeURL: "https://keycloak.enciso.website/auth/realms/k8s/protocol/openid-connect/auth"
+    tokenURL: "https://keycloak.enciso.website/auth/realms/k8s/protocol/openid-connect/token"
+    clientID: "oidckube"
+    clientSecret: "b7777864-d75b-441c-856a-eeac94b73015"
+    redirectURL: "https://keycloak.enciso.website/auth/realms/k8s/account"
+    scopes: ["openid", "profile", "email", "offline_access", "groups"]
+    usernameClaim: "email"
+    emailClaim: "email"
+    customHTMLTemplatesDir: "/gangway-template"
